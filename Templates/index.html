@@ -1,0 +1,58 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Skillbox Chat</title>
+    <script
+        src="https://code.jquery.com/jquery-3.6.0.min.js"
+        integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4="
+        crossorigin="anonymous">
+    </script>
+    <script language="JavaScript">
+        function loadMessages() {
+           $.get(
+            "/get_messages",
+            (data) => {
+                $("#chat_window").empty();
+                var messages = data["messages"];
+                for (var i in messages) {
+                    var message = messages[i];
+                    var name = message["sender"];
+                    var text = message["text"];
+                    var time = message["time"];
+                    console.log(name, text, time);
+                    var html = "<div> [<b> " + name + " </b>]: " + text + " <i>" + time + "</i> </div>";
+                    var div = $(html);
+
+                    $("#chat_window").append(div);
+                }
+            }
+           );
+        }
+        function sendMessage() {
+            var name = $("#name").val();
+            var text = $("#text").val();
+            $.get("/send_message", { "name" : name, "text" : text});
+            $("#text").val("");
+        }
+        $(() => {
+           
+           $("#text").on("keypress", (event) => {
+                // При нажатии Enter, вызвать функцию sendMessage
+                if (event.keyCode == 13) {
+                    sendMessage();
+                }
+           });
+           setInterval(loadMessages, 1000);
+        });
+    </script>
+</head>
+<body>
+    <b>Your name:</b>
+    <input id="name" type="text" placeholder="Your name"/>
+
+    <div id="chat_window"></div>
+
+    <br/>
+    <input id="text" type="text" placeholder="Text">
+</body>
+</html>
