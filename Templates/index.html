@@ -1,7 +1,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Skillbox Chat</title>
+    <title>Chat</title>
     <script
         src="https://code.jquery.com/jquery-3.6.0.min.js"
         integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4="
@@ -34,10 +34,8 @@
             $.get("/send_message", { "name" : name, "text" : text});
             $("#text").val("");
         }
-        $(() => {
-           
+        $(() => { 
            $("#text").on("keypress", (event) => {
-                // При нажатии Enter, вызвать функцию sendMessage
                 if (event.keyCode == 13) {
                     sendMessage();
                 }
