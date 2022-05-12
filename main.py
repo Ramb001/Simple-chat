@@ -41,12 +41,16 @@ def get_messages():
 
 @app.route("/")
 def main_page():
-    return "Hello, this is Skill Chat v0.1"
+    return "Simple chat by Artem Stanko"
 
 @app.route("/send_message")
 def send_message():
     sender = request.args["name"]
+    if len(sender) < 3 or len(sender) > 100:
+        return "Error of length"
     text = request.args["text"]
+    if len(text) < 1:
+        return "Error of length"
     add_message(sender, text)
     return "OK"
 
